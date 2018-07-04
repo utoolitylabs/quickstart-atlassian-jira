@@ -61,6 +61,13 @@
             ]
             }, {
             "Label": {
+                "default": "Development Configuration"
+            },
+            "Parameters": [
+                "UseSpotInstances"
+            ]
+            }, {
+            "Label": {
                 "default": "AWS Quick Start Configuration"
             },
             "Parameters": [
@@ -146,6 +153,9 @@
                 },
                 "CustomDnsName": {
                     "default": "Existing DNS name (optional)"
+                },
+                "UseSpotInstances": {
+                    "default": "Use Spot Instances"
                 }
             }
         }
@@ -399,6 +409,16 @@
         "CustomDnsName": {
             "Description": "Use custom existing DNS name for your JIRA Data Center instance. Please note: you must own the domain and configure it to point at the load balancer.",
             "Type": "String"
+        },
+        "UseSpotInstances": {
+            "Description": "Use Amazon EC2 spot instances",
+            "Type": "String",
+            "Default": "false",
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "ConstraintDescription": "Must be 'true' or 'false'."
         }
     },
     "Conditions": {
