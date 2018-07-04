@@ -63,6 +63,7 @@
                 },
                 "Parameters": [
                     "MaxSpotPrice",
+                    "StandbyMode",
                     "UseSpotInstances"
                 ]
             }],
@@ -123,6 +124,9 @@
                 },
                 "InternalSubnets": {
                     "default": "Internal subnets"
+                },
+                "StandbyMode": {
+                    "default": "Standby Mode"
                 },
                 "UseSpotInstances": {
                     "default": "Use Spot Instances"
@@ -337,10 +341,15 @@
             "Type": "List<AWS::EC2::Subnet::Id>",
             "ConstraintDescription": "Must be a list of two or more Subnet ID's within the selected VPC."
         },
-        "VPC": {
-            "Description": "Virtual Private Cloud",
-            "Type": "AWS::EC2::VPC::Id",
-            "ConstraintDescription": "Must be the ID of a VPC."
+        "StandbyMode": {
+            "Description": "Disable/Enable applicable cluster resources for cost saving purposes",
+            "Type": "String",
+            "Default": "active",
+            "AllowedValues": [
+                "cold",
+                "active"
+            ],
+            "ConstraintDescription": "Must be 'cold' or 'active'."
         },
         "UseSpotInstances": {
             "Description": "Use Amazon EC2 spot instances",
@@ -351,6 +360,11 @@
                 "false"
             ],
             "ConstraintDescription": "Must be 'true' or 'false'."
+        },
+        "VPC": {
+            "Description": "Virtual Private Cloud",
+            "Type": "AWS::EC2::VPC::Id",
+            "ConstraintDescription": "Must be the ID of a VPC."
         }
     },
     "Conditions": {
@@ -359,6 +373,14 @@
                     "Ref": "DBStorageType"
                 },
                 "Provisioned IOPS"
+            ]
+        },
+        "DisableClusterNodes": {
+            "Fn::Equals": [
+                {
+                    "Ref": "StandbyMode"
+                },
+                "cold"
             ]
         },
         "DoCollectd": {
@@ -616,16 +638,34 @@
             "Type": "AWS::AutoScaling::AutoScalingGroup",
             "Properties": {
                 "DesiredCapacity": {
-                    "Ref": "ClusterNodeMin"
+                    "Fn::If": [
+                        "DisableClusterNodes",
+                        "0",
+                        {
+                            "Ref": "ClusterNodeMin"
+                        }
+                    ]
                 },
                 "LaunchConfigurationName": {
                     "Ref": "ClusterNodeLaunchConfig"
                 },
                 "MaxSize": {
-                    "Ref": "ClusterNodeMax"
+                    "Fn::If": [
+                        "DisableClusterNodes",
+                        "0",
+                        {
+                            "Ref": "ClusterNodeMax"
+                        }
+                    ]
                 },
                 "MinSize": {
-                    "Ref": "ClusterNodeMin"
+                    "Fn::If": [
+                        "DisableClusterNodes",
+                        "0",
+                        {
+                            "Ref": "ClusterNodeMin"
+                        }
+                    ]
                 },
                 "LoadBalancerNames": [{
                     "Ref": "LoadBalancer"
