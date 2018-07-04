@@ -14,7 +14,7 @@
                     "InternalSubnets",
                     "AssociatePublicIpAddress",
                     "KeyName",
-                    "SSLCertificateName"
+                    "SSLCertificateARN"
                 ]
             },
             {
@@ -116,8 +116,8 @@
                 "CustomDnsName": {
                     "default": "Existing DNS name (optional)"
                 },
-                "SSLCertificateName": {
-                    "default": "SSL Certificate Name"
+                "SSLCertificateARN": {
+                    "default": "SSL Certificate ARN"
                 },
                 "ExternalSubnets": {
                     "default": "External subnets"
@@ -314,11 +314,11 @@
             "Description": "Use custom existing DNS name for your JIRA Data Center instance. Please note: you must own the domain and configure it to point at the load balancer.",
             "Type": "String"
         },
-        "SSLCertificateName": {
-            "Description": "The name of your Server Certificate to use for HTTPS.  Leave blank if you don't want to set up HTTPS at this time",
+        "SSLCertificateARN": {
+            "Description": "The ARN of your Server Certificate to use for HTTPS.  Leave blank if you don't want to set up HTTPS at this time",
             "Type": "String",
             "MinLength": "0",
-            "MaxLength": "32",
+            "MaxLength": "128",
             "Default": ""
         },
         "StartCollectd": {
@@ -411,7 +411,7 @@
         "DoSSL": {
             "Fn::Not": [{
                 "Fn::Equals": [{
-                        "Ref": "SSLCertificateName"
+                        "Ref": "SSLCertificateARN"
                     },
                     ""
                 ]
@@ -1142,16 +1142,7 @@
                                 "JSessionIdStickiness"
                             ],
                             "SSLCertificateId": {
-                                "Fn::Join": [
-                                    "", [
-                                        "arn:aws:iam::", {
-                                            "Ref": "AWS::AccountId"
-                                        },
-                                        ":server-certificate/", {
-                                            "Ref": "SSLCertificateName"
-                                        }
-                                    ]
-                                ]
+                                "Ref": "SSLCertificateARN"
                             }
                         }, {
                             "Ref": "AWS::NoValue"

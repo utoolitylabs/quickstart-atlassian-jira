@@ -14,7 +14,7 @@
                     "PrivateSubnet2CIDR",
                     "PublicSubnet1CIDR",
                     "PublicSubnet2CIDR",
-                    "SSLCertificateName",
+                    "SSLCertificateARN",
                     "AssociatePublicIpAddress"
                 ]
             },
@@ -149,7 +149,7 @@
                 "DBIops": {
                     "default": "RDS Provisioned IOPS"
                 },
-                "SSLCertificateName": {
+                "SSLCertificateARN": {
                     "default": "SSL Certificate Name"
                 },
                 "CustomDnsName": {
@@ -403,8 +403,8 @@
             ],
             "ConstraintDescription": "Must be 'true' or 'false'"
         },
-        "SSLCertificateName": {
-            "Description": "The name of your Server Certificate to use for HTTPS.  Leave blank if you don't want to set up HTTPS at this time",
+        "SSLCertificateARN": {
+            "Description": "The ARN of your Server Certificate to use for HTTPS.  Leave blank if you don't want to set up HTTPS at this time",
             "Type": "String",
             "MinLength": "0",
             "MaxLength": "128",
@@ -464,7 +464,7 @@
         "DoSSL": {
             "Fn::Not": [{
                 "Fn::Equals": [{
-                    "Ref": "SSLCertificateName"
+                    "Ref": "SSLCertificateARN"
                 },
                 ""
                 ]
