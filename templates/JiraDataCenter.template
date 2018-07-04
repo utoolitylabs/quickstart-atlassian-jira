@@ -56,6 +56,15 @@
                     "CatalinaOpts",
                     "StartCollectd"
                 ]
+            },
+            {
+                "Label": {
+                    "default": "Development Configuration"
+                },
+                "Parameters": [
+                    "MaxSpotPrice",
+                    "UseSpotInstances"
+                ]
             }],
             "ParameterLabels": {
                 "AssociatePublicIpAddress": {
@@ -100,6 +109,9 @@
                 "KeyName": {
                     "default": "Key Name"
                 },
+                "MaxSpotPrice": {
+                    "default": "Maximum Spot Price"
+                },
                 "CustomDnsName": {
                     "default": "Existing DNS name (optional)"
                 },
@@ -111,6 +123,9 @@
                 },
                 "InternalSubnets": {
                     "default": "Internal subnets"
+                },
+                "UseSpotInstances": {
+                    "default": "Use Spot Instances"
                 },
                 "VPC": {
                     "default": "VPC"
@@ -285,6 +300,12 @@
             "Type": "AWS::EC2::KeyPair::KeyName",
             "ConstraintDescription": "Must be the name of an existing EC2 Key Pair."
         },
+        "MaxSpotPrice": {
+            "MinValue": "0.0421",
+            "Default": "1.8421",
+            "Description": "(Legacy) Maximum spot price (rarely relevant anymore after spot pricing model change)",
+            "Type": "Number"
+        },
         "CustomDnsName": {
             "Description": "Use custom existing DNS name for your JIRA Data Center instance. Please note: you must own the domain and configure it to point at the load balancer.",
             "Type": "String"
@@ -320,6 +341,16 @@
             "Description": "Virtual Private Cloud",
             "Type": "AWS::EC2::VPC::Id",
             "ConstraintDescription": "Must be the ID of a VPC."
+        },
+        "UseSpotInstances": {
+            "Description": "Use Amazon EC2 spot instances",
+            "Type": "String",
+            "Default": "false",
+            "AllowedValues": [
+                "true",
+                "false"
+            ],
+            "ConstraintDescription": "Must be 'true' or 'false'."
         }
     },
     "Conditions": {
@@ -363,6 +394,14 @@
                     ""
                 ]
             }]
+        },
+        "UseSpotInstances": {
+            "Fn::Equals": [
+                {
+                    "Ref": "UseSpotInstances"
+                },
+                "true"
+            ]
         }
     },
     "Mappings": {
@@ -874,6 +913,17 @@
                 "SecurityGroups": [{
                     "Ref": "SecurityGroup"
                 }],
+                "SpotPrice": {
+                    "Fn::If": [
+                        "UseSpotInstances",
+                        {
+                            "Ref": "MaxSpotPrice"
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                },
                 "UserData": {
                     "Fn::Base64": {
                         "Fn::Join": [
