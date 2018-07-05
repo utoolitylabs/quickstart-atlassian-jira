@@ -13,6 +13,7 @@
                     "ExternalSubnets",
                     "InternalSubnets",
                     "CidrBlock",
+                    "BastionSecurityGroupID",
                     "AssociatePublicIpAddress",
                     "KeyName",
                     "SSLCertificateARN"
@@ -71,6 +72,9 @@
             "ParameterLabels": {
                 "AssociatePublicIpAddress": {
                     "default": "Assign public IP"
+                },
+                "BastionSecurityGroupID": {
+                    "default": "Bastion Security Group ID"
                 },
                 "CatalinaOpts": {
                     "default": "Catalina options"
@@ -151,6 +155,13 @@
                 "false"
             ],
             "ConstraintDescription": "Must be 'true' or 'false'."
+        },
+        "BastionSecurityGroupID": {
+            "Description": "(Optional) Bastion Security Group ID",
+            "Type": "String",
+            "Default": "",
+            "AllowedPattern": "(sg-([0-9a-f]{1,})){0,1}",
+            "ConstraintDescription": "Must be the ID of an EC2 security group, or empty to skip."
         },
         "ClusterNodeMax": {
             "Type": "Number",
@@ -411,10 +422,17 @@
                 ]
             }]
         },
-        "UseCustomDnsName": {
+        "GrantSSHAccessToCidrBlock": {
+            "Fn::Equals": [{
+                    "Ref": "BastionSecurityGroupID"
+                },
+                ""
+            ]
+        },
+        "GrantSSHAccessToBastionSecurityGroup": {
             "Fn::Not": [{
                 "Fn::Equals": [{
-                        "Ref": "CustomDnsName"
+                        "Ref": "BastionSecurityGroupID"
                     },
                     ""
                 ]
@@ -424,6 +442,15 @@
             "Fn::Not": [{
                 "Fn::Equals": [{
                         "Ref": "SSLCertificateARN"
+                    },
+                    ""
+                ]
+            }]
+        },
+        "UseCustomDnsName": {
+            "Fn::Not": [{
+                "Fn::Equals": [{
+                        "Ref": "CustomDnsName"
                     },
                     ""
                 ]
@@ -1185,12 +1212,20 @@
                     "Ref": "VPC"
                 },
                 "SecurityGroupIngress": [{
-                    "IpProtocol": "tcp",
-                    "FromPort": "22",
-                    "ToPort": "22",
-                    "CidrIp": {
-                        "Ref": "CidrBlock"
-                    }
+                    "Fn::If": [
+                        "GrantSSHAccessToCidrBlock",
+                        {
+                            "IpProtocol": "tcp",
+                            "FromPort": "22",
+                            "ToPort": "22",
+                            "CidrIp": {
+                                "Ref": "CidrBlock"
+                            }
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
                 }, {
                     "IpProtocol": "tcp",
                     "FromPort": "80",
@@ -1205,6 +1240,21 @@
                     "CidrIp": {
                         "Ref": "CidrBlock"
                     }
+                }, {
+                    "Fn::If": [
+                        "GrantSSHAccessToBastionSecurityGroup",
+                        {
+                            "IpProtocol": "tcp",
+                            "FromPort": "22",
+                            "ToPort": "22",
+                            "SourceSecurityGroupId": {
+                                "Ref": "BastionSecurityGroupID"
+                            }
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
                 }]
             }
         },
