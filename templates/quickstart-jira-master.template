@@ -64,6 +64,7 @@
                 "default": "Development Configuration"
             },
             "Parameters": [
+                "StandbyMode",
                 "UseSpotInstances"
             ]
             }, {
@@ -153,6 +154,9 @@
                 },
                 "CustomDnsName": {
                     "default": "Existing DNS name (optional)"
+                },
+                "StandbyMode": {
+                    "default": "Standby Mode"
                 },
                 "UseSpotInstances": {
                     "default": "Use Spot Instances"
@@ -409,6 +413,16 @@
         "CustomDnsName": {
             "Description": "Use custom existing DNS name for your JIRA Data Center instance. Please note: you must own the domain and configure it to point at the load balancer.",
             "Type": "String"
+        },
+        "StandbyMode": {
+            "Description": "Disable/Enable applicable cluster resources for cost saving purposes",
+            "Type": "String",
+            "Default": "active",
+            "AllowedValues": [
+                "cold",
+                "active"
+            ],
+            "ConstraintDescription": "Must be 'cold' or 'active'."
         },
         "UseSpotInstances": {
             "Description": "Use Amazon EC2 spot instances",
