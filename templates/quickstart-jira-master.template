@@ -449,40 +449,6 @@
         }
     },
     "Conditions": {
-        "DBProvisionedIops": {
-            "Fn::Equals": [{
-                "Ref": "DBStorageType"
-            },
-            "Provisioned IOPS"
-            ]
-        },
-        "DoCollectd": {
-            "Fn::Not": [{
-                "Fn::Equals": [{
-                    "Ref": "StartCollectd"
-                },
-                ""
-                ]
-            }]
-        },
-        "DoSetDBMasterUserPassword": {
-            "Fn::Not": [{
-                "Fn::Equals": [{
-                    "Ref": "DBMasterUserPassword"
-                },
-                ""
-                ]
-            }]
-        },
-        "DoSSL": {
-            "Fn::Not": [{
-                "Fn::Equals": [{
-                    "Ref": "SSLCertificateARN"
-                },
-                ""
-                ]
-            }]
-        },
         "GovCloudCondition": {
             "Fn::Equals": [
                 {
