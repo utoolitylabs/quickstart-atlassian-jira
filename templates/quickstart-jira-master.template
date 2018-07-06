@@ -15,6 +15,7 @@
                     "PublicSubnet1CIDR",
                     "PublicSubnet2CIDR",
                     "SSLCertificateARN",
+                    "AccessCIDR",
                     "AssociatePublicIpAddress"
                 ]
             },
@@ -79,6 +80,9 @@
             "ParameterLabels": {
                 "AvailabilityZones": {
                     "default": "Availability Zones"
+                },
+                "AccessCIDR": {
+                    "default": "Permitted IP range"
                 },
                 "KeyPairName": {
                     "default": "Key Name"
@@ -231,6 +235,15 @@
             "Default": "10.0.0.0/16",
             "Description": "CIDR Block for the VPC",
             "Type": "String"
+        },
+        "AccessCIDR": {
+            "Default": "",
+            "Description": "The CIDR IP range that is permitted to access the Jira URL. Use 0.0.0.0/0 if you want public access from the internet.",
+            "Type": "String",
+            "MinLength": "9",
+            "MaxLength": "18",
+            "AllowedPattern": "(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})\\.(\\d{1,3})/(\\d{1,2})",
+            "ConstraintDescription": "Must be a valid IP CIDR range of the form x.x.x.x/x."
         },
         "AssociatePublicIpAddress": {
             "Description": "Controls if the EC2 instances are assigned a public IP address",
@@ -636,6 +649,9 @@
                             "VPCStack",
                             "Outputs.VPCID"
                         ]
+                    },
+                    "CidrBlock": {
+                        "Ref": "AccessCIDR"
                     },
                     "AssociatePublicIpAddress": {
                         "Ref": "AssociatePublicIpAddress"
