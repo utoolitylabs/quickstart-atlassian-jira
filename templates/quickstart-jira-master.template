@@ -666,6 +666,9 @@
                     },
                     "KeyName": {
                         "Ref": "KeyPairName"
+                    },
+                    "UseSpotInstances": {
+                        "Ref": "UseSpotInstances"
                     }
                 }
             }
