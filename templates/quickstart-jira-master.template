@@ -24,7 +24,8 @@
                     "default": "JIRA setup"
                 },
                 "Parameters": [
-                    "JiraProduct"
+                    "JiraProduct",
+                    "JiraVersion"
                 ]
             },
             {
@@ -116,7 +117,10 @@
                     "default": "Assign public IP"
                 },
                 "JiraProduct": {
-                    "default": "JIRA Product"
+                    "default": "Jira product"
+                },
+                "JiraVersion": {
+                    "default": "Jira version"
                 },
                 "CatalinaOpts": {
                     "default": "Catalina Options"
@@ -686,6 +690,21 @@
                     },
                     "CustomDnsName": {
                         "Ref": "CustomDnsName"
+                    },
+                    "QSS3BucketName": {
+                        "Ref": "QSS3BucketName"
+                    },
+                    "QSS3KeyPrefix": {
+                        "Ref": "QSS3KeyPrefix"
+                    },
+                    "QSS3KeyPrefix": {
+                        "Ref": "QSS3KeyPrefix"
+                    },
+                    "StandbyMode": {
+                        "Ref": "StandbyMode"
+                    },
+                    "UseSpotInstances": {
+                        "Ref": "UseSpotInstances"
                     },
                     "KeyName": {
                         "Ref": "KeyPairName"

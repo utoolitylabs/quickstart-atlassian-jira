@@ -24,7 +24,8 @@
                     "default": "JIRA setup"
                 },
                 "Parameters": [
-                    "JiraProduct"
+                    "JiraProduct",
+                    "JiraVersion"
                 ]
             }, {
                 "Label": {
@@ -68,6 +69,15 @@
                     "StackStandbyMode",
                     "UseSpotInstances",
                     "MaxSpotPrice"
+                ]
+            },
+            {
+                "Label": {
+                    "default": "AWS Quick Start Configuration"
+                },
+                "Parameters": [
+                    "QSS3BucketName",
+                    "QSS3KeyPrefix"
                 ]
             }],
             "ParameterLabels": {
@@ -117,7 +127,10 @@
                     "default": "RDS Provisioned IOPS"
                 },
                 "JiraProduct": {
-                    "default": "JIRA Product"
+                    "default": "Jira product"
+                },
+                "JiraVersion": {
+                    "default": "Jira version"
                 },
                 "KeyName": {
                     "default": "Key Name"
@@ -136,6 +149,12 @@
                 },
                 "InternalSubnets": {
                     "default": "Internal subnets"
+                },
+                "QSS3BucketName": {
+                    "default": "Quick Start S3 Bucket Name"
+                },
+                "QSS3KeyPrefix": {
+                    "default": "Quick Start S3 Key Prefix"
                 },
                 "StackStandbyMode": {
                     "default": "Stack standby mode"
@@ -342,6 +361,12 @@
                 "Core"
             ]
         },
+        "JiraVersion": {
+            "Description": "The Jira version to install. Installs latest available version of the selected product",
+            "Type": "String",
+            "ConstraintDescription": "Must be a valid Jira version number, for example 7.2.3. Find valid versions at https://jira.atlassian.com/display/DOC/Jira+Release+Notes",
+            "AllowedPattern": "(\\d+\\.\\d+\\.\\d+(-?.*))"
+        },
         "KeyName": {
             "Description": "The EC2 Key Pair to allow SSH access to the instances",
             "Type": "AWS::EC2::KeyPair::KeyName",
@@ -383,6 +408,20 @@
             "Description": "Subnets (two or more) where your cluster nodes and other internal infrastructure will be deployed. MUST be within the selected VPC. Specify the ExternalSubnets again here if you wish to deploy the whole stack into the same subnets.",
             "Type": "List<AWS::EC2::Subnet::Id>",
             "ConstraintDescription": "Must be a list of two or more Subnet ID's within the selected VPC."
+        },
+        "QSS3BucketName": {
+            "AllowedPattern": "^[0-9a-zA-Z]+([0-9a-zA-Z-]*[0-9a-zA-Z])*$",
+            "ConstraintDescription": "Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
+            "Default": "aws-quickstart",
+            "Description": "S3 bucket name for the Quick Start assets. Quick Start bucket name can include numbers, lowercase letters, uppercase letters, and hyphens (-). It cannot start or end with a hyphen (-).",
+            "Type": "String"
+        },
+        "QSS3KeyPrefix": {
+            "AllowedPattern": "^[0-9a-zA-Z-/]*$",
+            "ConstraintDescription": "Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
+            "Default": "quickstart-atlassian-jira/",
+            "Description": "S3 key prefix for the Quick Start assets. Quick Start key prefix can include numbers, lowercase letters, uppercase letters, hyphens (-), and forward slash (/).",
+            "Type": "String"
         },
         "StackStandbyMode": {
             "Description": "Disable/Enable applicable stack resources for cost saving purposes",
@@ -890,9 +929,12 @@
                                                 ]
                                             },
                                             "\n",
-                                            "ATL_RELEASE_S3_BUCKET=atlassian-software\n",
-                                            "ATL_RELEASE_S3_PATH=releases\n",
-
+                                            {
+                                                "Fn::Sub": "ATL_RELEASE_S3_BUCKET=${QSS3BucketName}\n"
+                                            },
+                                            {
+                                                "Fn::Sub": "ATL_RELEASE_S3_PATH=releases/${JiraVersion}\n"
+                                            },
                                             "ATL_POSTGRES_ENABLED=false\n",
                                             "ATL_PROXY_NAME=", {
                                                 "Fn::If": [
