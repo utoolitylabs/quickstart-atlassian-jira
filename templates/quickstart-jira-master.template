@@ -667,6 +667,9 @@
                     "KeyName": {
                         "Ref": "KeyPairName"
                     },
+                    "StandbyMode": {
+                        "Ref": "StandbyMode"
+                    },
                     "UseSpotInstances": {
                         "Ref": "UseSpotInstances"
                     }
