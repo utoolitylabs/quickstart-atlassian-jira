@@ -65,7 +65,7 @@
                 },
                 "Parameters": [
                     "MaxSpotPrice",
-                    "StandbyMode",
+                    "StackStandbyMode",
                     "UseSpotInstances"
                 ]
             }],
@@ -133,11 +133,11 @@
                 "InternalSubnets": {
                     "default": "Internal subnets"
                 },
-                "StandbyMode": {
-                    "default": "Standby Mode"
+                "StackStandbyMode": {
+                    "default": "Stack standby mode"
                 },
                 "UseSpotInstances": {
-                    "default": "Use Spot Instances"
+                    "default": "Use spot instances"
                 },
                 "VPC": {
                     "default": "VPC"
@@ -364,8 +364,8 @@
             "Type": "List<AWS::EC2::Subnet::Id>",
             "ConstraintDescription": "Must be a list of two or more Subnet ID's within the selected VPC."
         },
-        "StandbyMode": {
-            "Description": "Disable/Enable applicable cluster resources for cost saving purposes",
+        "StackStandbyMode": {
+            "Description": "Disable/Enable applicable stack resources for cost saving purposes",
             "Type": "String",
             "Default": "active",
             "AllowedValues": [
@@ -401,7 +401,7 @@
         "DisableClusterNodes": {
             "Fn::Equals": [
                 {
-                    "Ref": "StandbyMode"
+                    "Ref": "StackStandbyMode"
                 },
                 "cold"
             ]

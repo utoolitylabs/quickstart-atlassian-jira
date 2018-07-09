@@ -65,7 +65,7 @@
                 "default": "Development Configuration"
             },
             "Parameters": [
-                "StandbyMode",
+                "StackStandbyMode",
                 "UseSpotInstances"
             ]
             }, {
@@ -159,11 +159,11 @@
                 "CustomDnsName": {
                     "default": "Existing DNS name (optional)"
                 },
-                "StandbyMode": {
-                    "default": "Standby Mode"
+                "StackStandbyMode": {
+                    "default": "Stack standby mode"
                 },
                 "UseSpotInstances": {
-                    "default": "Use Spot Instances"
+                    "default": "Use spot instances"
                 }
             }
         }
@@ -427,8 +427,8 @@
             "Description": "Use custom existing DNS name for your JIRA Data Center instance. Please note: you must own the domain and configure it to point at the load balancer.",
             "Type": "String"
         },
-        "StandbyMode": {
-            "Description": "Disable/Enable applicable cluster resources for cost saving purposes",
+        "StackStandbyMode": {
+            "Description": "Disable/Enable applicable stack resources for cost saving purposes",
             "Type": "String",
             "Default": "active",
             "AllowedValues": [
@@ -667,8 +667,8 @@
                     "KeyName": {
                         "Ref": "KeyPairName"
                     },
-                    "StandbyMode": {
-                        "Ref": "StandbyMode"
+                    "StackStandbyMode": {
+                        "Ref": "StackStandbyMode"
                     },
                     "UseSpotInstances": {
                         "Ref": "UseSpotInstances"
