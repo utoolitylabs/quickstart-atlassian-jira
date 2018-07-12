@@ -61,12 +61,12 @@
             },
             {
                 "Label": {
-                    "default": "Development Configuration"
+                    "default": "Availability/Cost (Optional)"
                 },
                 "Parameters": [
-                    "MaxSpotPrice",
                     "StackStandbyMode",
-                    "UseSpotInstances"
+                    "UseSpotInstances",
+                    "MaxSpotPrice"
                 ]
             }],
             "ParameterLabels": {
