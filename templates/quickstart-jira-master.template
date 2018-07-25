@@ -49,6 +49,7 @@
             },
             "Parameters": [
                 "CustomDnsName",
+                "DBSnapshotId",
                 "CatalinaOpts",
                 "StartCollectd"
             ]
@@ -140,6 +141,9 @@
                 },
                 "DBPassword": {
                     "default": "JIRA database password"
+                },
+                "DBSnapshotId": {
+                    "default": "Database snapshot ID to restore"
                 },
                 "DBStorage": {
                     "default": "Database storage"
@@ -373,6 +377,12 @@
             "AllowedPattern": "[a-zA-Z0-9]*",
             "ConstraintDescription": "Must contain only alphanumeric characters.",
             "NoEcho": "true"
+        },
+        "DBSnapshotId": {
+            "Description": "RDS snapshot ID of an existing backup to restore. If you use this parameter you will also need to manually restore your shared home directory.  Leave blank for a new instance.",
+            "Type": "String",
+            "Default": "",
+            "ConstraintDescription": "Must be a valid RDS snapshot ID, or blank."
         },
         "DBStorage": {
             "Description": "Database allocated storage size, in gigabytes (GB). Should be between 100 and 6144, if you are choosing Provisioned IOPS",
@@ -654,6 +664,9 @@
                     },
                     "DBPassword": {
                         "Ref": "DBPassword"
+                    },
+                    "DBSnapshotId": {
+                        "Ref": "DBSnapshotId"
                     },
                     "DBStorage": {
                         "Ref": "DBStorage"
