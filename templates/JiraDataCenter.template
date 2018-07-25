@@ -1117,6 +1117,9 @@
                 "DBInstanceClass": {
                     "Ref": "DBInstanceClass"
                 },
+                "DBInstanceIdentifier": {
+                    "Ref": "AWS::StackName"
+                },
                 "DBSnapshotIdentifier": {
                     "Fn::If": [
                         "RestoreFromRDSSnapshot", {
