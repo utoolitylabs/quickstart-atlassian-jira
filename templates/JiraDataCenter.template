@@ -432,7 +432,7 @@
                 ]
             }]
         },
-        "GrantSSHAccessToBastionSecurityGroup": {
+        "GrantSSHAndNFSAccessToBastionSecurityGroup": {
             "Fn::Equals": [{
                     "Fn::Select" : [ "0", { "Fn::Split": ["-", { "Ref": "BastionAccess" }]}]
                 },
@@ -452,7 +452,7 @@
                 },
                 {
                     "Fn::Not": [{
-                        "Condition": "GrantSSHAccessToBastionSecurityGroup"
+                        "Condition": "GrantSSHAndNFSAccessToBastionSecurityGroup"
                     }]
                 }
             ]
@@ -1282,11 +1282,26 @@
                     }
                 }, {
                     "Fn::If": [
-                        "GrantSSHAccessToBastionSecurityGroup",
+                        "GrantSSHAndNFSAccessToBastionSecurityGroup",
                         {
                             "IpProtocol": "tcp",
                             "FromPort": "22",
                             "ToPort": "22",
+                            "SourceSecurityGroupId": {
+                                "Ref": "BastionAccess"
+                            }
+                        },
+                        {
+                            "Ref": "AWS::NoValue"
+                        }
+                    ]
+                }, {
+                    "Fn::If": [
+                        "GrantSSHAndNFSAccessToBastionSecurityGroup",
+                        {
+                            "IpProtocol": "tcp",
+                            "FromPort": "2049",
+                            "ToPort": "2049",
                             "SourceSecurityGroupId": {
                                 "Ref": "BastionAccess"
                             }
