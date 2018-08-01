@@ -1137,7 +1137,7 @@
                     "Ref": "DBSubnetGroup"
                 },
                 "Engine": "postgres",
-                "EngineVersion": "9.3.12",
+                "EngineVersion": "9.6",
                 "MasterUsername": "postgres",
                 "MasterUserPassword": {
                     "Fn::If": [
