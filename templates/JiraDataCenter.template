@@ -776,6 +776,10 @@
                                         "", [
                                             "ATL_NGINX_ENABLED=false\n",
                                             "ATL_APP_DATA_MOUNT_ENABLED=false\n",
+                                            "ATL_CATALINA_OPTS=", {
+                                                "Ref": "CatalinaOpts"
+                                            },
+                                            "\n",
                                             "ATL_DB_NAME=jira\n",
                                             "ATL_DB_USER=jira\n",
                                             "ATL_DB_PASSWORD=", {
