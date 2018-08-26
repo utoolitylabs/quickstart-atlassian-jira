@@ -208,12 +208,22 @@
                 "m4.4xlarge",
                 "m4.10xlarge",
                 "m4.16xlarge",
+                "r5.large",
+                "r5.xlarge",
+                "r5.2xlarge",
+                "r5.4xlarge",
+                "r5.12xlarge",
+                "r5.24xlarge",
                 "r4.large",
                 "r4.xlarge",
                 "r4.2xlarge",
                 "r4.4xlarge",
                 "r4.8xlarge",
                 "r4.16xlarge",
+                "t3.medium",
+                "t3.large",
+                "t3.xlarge",
+                "t3.2xlarge",
                 "t2.medium",
                 "t2.large",
                 "t2.xlarge",
@@ -221,7 +231,7 @@
                 "x1.16xlarge",
                 "x1.32xlarge"
             ],
-            "ConstraintDescription": "Must be an EC2 instance type in the C5/C4, I3, M5/M4, R4, X1, or T2 family, 'xlarge' or larger",
+            "ConstraintDescription": "Must be an EC2 instance type in the C5/C4, I3, M5/M4, R5/R4, X1, or T3/T2 family, 'xlarge' or larger",
             "Description": "Instance type for the cluster nodes."
         },
         "CatalinaOpts": {
@@ -600,6 +610,24 @@
             "r4.16xlarge": {
                 "Arch": "HVM64"
             },
+            "r5.large": {
+                "Arch": "HVM64"
+            },
+            "r5.xlarge": {
+                "Arch": "HVM64"
+            },
+            "r5.2xlarge": {
+                "Arch": "HVM64"
+            },
+            "r5.4xlarge": {
+                "Arch": "HVM64"
+            },
+            "r5.12xlarge": {
+                "Arch": "HVM64"
+            },
+            "r5.24xlarge": {
+                "Arch": "HVM64"
+            },
             "t2.medium": {
                 "Arch": "HVM64"
             },
@@ -610,6 +638,18 @@
                 "Arch": "HVM64"
             },
             "t2.2xlarge": {
+                "Arch": "HVM64"
+            },
+            "t3.medium": {
+                "Arch": "HVM64"
+            },
+            "t3.large": {
+                "Arch": "HVM64"
+            },
+            "t3.xlarge": {
+                "Arch": "HVM64"
+            },
+            "t3.2xlarge": {
                 "Arch": "HVM64"
             },
             "x1.16xlarge": {
